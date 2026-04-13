@@ -1,0 +1,61 @@
+/* ========== QUESTS PAGE STYLES ========== */
+
+.quests-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.quests-header {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(30, 144, 255, 0.05) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.quests-title {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #00d4ff;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  margin-bottom: 12px;
+}
+
+.quests-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-number {
+  font-size: 14px;
+  font-weight: 800;
+  color: #00d4ff;
+  min-width: 40px;
+}
+
+.progress-bar-mini {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.progress-fill-mini {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4ff, #1e90ff);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+  transition: width 0.4s ease;
+}
+
+.quests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

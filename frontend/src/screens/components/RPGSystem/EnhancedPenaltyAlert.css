@@ -1,0 +1,76 @@
+/* ========== ENHANCED PENALTY ALERT ========== */
+
+.penalty-alert-container {
+  background: linear-gradient(135deg, rgba(40, 20, 20, 0.9) 0%, rgba(50, 25, 25, 0.9) 100%);
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 30px rgba(255, 107, 107, 0.2);
+}
+
+.penalty-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.penalty-icon {
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));
+}
+
+.penalty-title {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ff6b6b;
+  text-shadow: 0 0 8px rgba(255, 107, 107, 0.4);
+}
+
+.penalty-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent);
+  margin: 12px 0;
+}
+
+.penalties-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.penalty-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255, 107, 107, 0.05);
+  border-left: 2px solid #ff6b6b;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.penalty-quest {
+  color: #b0b8d0;
+  font-weight: 600;
+}
+
+.penalty-value {
+  color: #ff6b6b;
+  font-weight: 700;
+  text-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+}
+
+.penalty-info {
+  font-size: 11px;
+  color: #ff9999;
+  line-height: 1.4;
+  padding: 8px 12px;
+  background: rgba(255, 107, 107, 0.02);
+  border-radius: 3px;
+  text-align: center;
+}

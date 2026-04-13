@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --navbg: #0a0f1e;
+  --cyan: #00d4ff;
+  --panel: rgba(13, 21, 39, 0.6);
+  --panel-solid: #0d1527;
+  --border-cyan: rgba(0, 212, 255, 0.4);
+  --text-primary: #e0e6ed;
+  --text-muted: #62728f;
+  
+  /* Strict Rank Colors */
+  --rank-s: #00d4ff;
+  --rank-a: #29b6f6;
+  --rank-b: #42a5f5;
+  --rank-c: #66bb6a;
+  --rank-d: #ffa726;
+  --rank-e: #ef5350;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  background-color: var(--navbg);
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Base structural constraint */
+.system-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+.font-jetbrains {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Scrollbars */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--navbg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan);
+}
+
+/* HUD Element Utility Classes */
+.hud-panel {
+  background-color: var(--panel);
+  border: 1px solid var(--border-cyan);
+  position: relative;
+}
+
+.hud-divider {
+  height: 1px;
+  background-color: var(--border-cyan);
+  width: 100%;
+}
+
+.hud-chip {
+  border: 1px solid var(--cyan);
+  background-color: rgba(0, 212, 255, 0.05);
+  color: var(--cyan);
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.progress-glow {
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* CRT Overlay Effect */
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+  z-index: 999;
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/* Simple Background noise override */
+.noise-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
+  z-index: -1;
+  pointer-events: none;
+}
