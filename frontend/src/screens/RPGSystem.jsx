@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Shield, ListChecks, Trophy, Terminal, Info 
+} from 'lucide-react';
 import StatusPage from './pages/StatusPage';
 import QuestsPage from './pages/QuestsPage';
 import AchievementsPage from './pages/AchievementsPage';
@@ -7,6 +10,8 @@ import SystemPage from './pages/SystemPage';
 import LevelUpModal from './components/RPGSystem/LevelUpModal';
 import AchievementUnlockModal from './components/RPGSystem/AchievementUnlockModal';
 import EnhancedPenaltyAlert from './components/RPGSystem/EnhancedPenaltyAlert';
+import DailyLoginOverlay from './components/RPGSystem/DailyLoginOverlay';
+import StatNotification from './components/RPGSystem/StatNotification';
 import Toast from '../components/Toast';
 import {
   initializeStorage,
@@ -37,6 +42,8 @@ const RPGSystem = () => {
   const [penalties, setPenalties] = useState([]);
   const [showAchievementUnlock, setShowAchievementUnlock] = useState(false);
   const [unlockedAchievement, setUnlockedAchievement] = useState(null);
+  const [showLoginOverlay, setShowLoginOverlay] = useState(true);
+  const [activeStatNotifications, setActiveStatNotifications] = useState([]);
 
   // Initialize on mount
   useEffect(() => {
@@ -100,46 +107,44 @@ const RPGSystem = () => {
 
   // Handle quest completion
   const completeQuest = (questId, questData) => {
-    // Mark quest as completed
     const updatedQuests = { ...todayQuests, [questId]: true };
     setTodayQuestsState(updatedQuests);
 
-    // Add XP
     const updatedPlayer = { ...player, totalXP: player.totalXP + questData.xp };
-
-    // Add stat points
     const updatedStats = { ...stats };
+    const newNotifications = [];
+
     if (questData.stats) {
       Object.entries(questData.stats).forEach(([stat, points]) => {
         updatedStats[stat] = Math.min(100, updatedStats[stat] + points);
+        newNotifications.push({ stat, amount: points });
       });
     } else if (questData.stat && questData.increment) {
       updatedStats[questData.stat] = Math.min(100, updatedStats[questData.stat] + questData.increment);
+      newNotifications.push({ stat: questData.stat, amount: questData.increment });
     }
 
     setStatsState(updatedStats);
+    if (newNotifications.length > 0) {
+      setActiveStatNotifications(prev => [...prev, ...newNotifications]);
+    }
 
-    // Check if first quest (First Blood achievement)
     if (Object.values(todayQuests).every(v => !v)) {
       unlockAchievement('first_blood');
     }
 
-    // Check if all quests completed (Iron Will)
     if (Object.values(updatedQuests).filter(Boolean).length === 10) {
       unlockAchievement('iron_will');
     }
 
-    // Check for S rank (Monarch)
     Object.values(updatedStats).forEach(statPoints => {
       if (statPoints >= 90) {
         unlockAchievement('monarch');
       }
     });
 
-    // Show toast
-    showToast(`${questData.name} COMPLETE — +${questData.xp} XP`);
+    showToast(`QUEST_PROTOCOL_COMPLETE: +${questData.xp} XP`);
 
-    // Check for level up
     if (checkLevelUp(updatedPlayer.totalXP, updatedPlayer.level)) {
       const newLvl = updatedPlayer.level + 1;
       updatedPlayer.level = newLvl;
@@ -177,16 +182,29 @@ const RPGSystem = () => {
   };
 
   return (
-    <div className="app-container">
-      <div className="app-header">
-        <div className="app-title">⚔️ RPG SYSTEM</div>
+    <div className="app-main system-hud-theme">
+      {/* Global Immersion Layers */}
+      <div className="sl-scanlines" />
+      <div className="sl-hud-corners" />
+
+      <AnimatePresence>
+        {showLoginOverlay && (
+          <DailyLoginOverlay 
+            player={player} 
+            onComplete={() => setShowLoginOverlay(false)} 
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="hud-system-header sl-terminal-text">
+        <div className="header-glitch-title" data-text="SYSTEM_INTERFACE">SYSTEM_INTERFACE</div>
+        <div className="header-status-dot" />
+        <div className="header-readout">[ LOCATION: SEOUL_HQ // ID: HUNTER_LEVEL_{player.level} ]</div>
       </div>
 
       <div className="app-content">
-        {/* Penalties alert (enhanced) */}
         <EnhancedPenaltyAlert penalties={penalties} />
 
-        {/* Page content */}
         <AnimatePresence mode="wait">
           {currentPage === 'status' && <StatusPage key="status" player={player} stats={stats} />}
           {currentPage === 'quests' && (
@@ -204,66 +222,82 @@ const RPGSystem = () => {
               key="system"
               player={player}
               onResetQuests={() => {
-                // Reset today's quests and update streaks
                 const completedCount = Object.values(todayQuests).filter(Boolean).length;
                 if (completedCount >= 7) {
                   const updatedPlayer = { ...player, streak: (player.streak || 0) + 1 };
                   setPlayerState(updatedPlayer);
-
-                  // Check 7-day warrior
                   if (updatedPlayer.streak >= 7) {
                     unlockAchievement('7_day_warrior');
                   }
                 }
-
-                // Reset quests
                 setTodayQuestsState(getTodayQuests());
-                showToast('Today\'s quests have been reset!');
+                showToast('REABLING_PROTOCOLS: Today\'s quests reset');
               }}
             />
           )}
         </AnimatePresence>
       </div>
 
-      {/* Bottom navigation */}
-      <div className="bottom-nav">
+      {/* Technical Bottom Navigation */}
+      <div className="sl-bottom-hud">
         <button
-          className={`nav-btn ${currentPage === 'status' ? 'active' : ''}`}
+          className={`hud-nav-btn ${currentPage === 'status' ? 'active' : ''}`}
           onClick={() => setCurrentPage('status')}
         >
-          <span className="nav-icon">⚔️</span>
-          <span>STATUS</span>
+          <Shield className="nav-hud-icon" />
+          <span className="sl-terminal-text">STATUS</span>
         </button>
         <button
-          className={`nav-btn ${currentPage === 'quests' ? 'active' : ''}`}
+          className={`hud-nav-btn ${currentPage === 'quests' ? 'active' : ''}`}
           onClick={() => setCurrentPage('quests')}
         >
-          <span className="nav-icon">📋</span>
-          <span>QUESTS</span>
+          <ListChecks className="nav-hud-icon" />
+          <span className="sl-terminal-text">QUESTS</span>
         </button>
         <button
-          className={`nav-btn ${currentPage === 'achievements' ? 'active' : ''}`}
+          className={`hud-nav-btn ${currentPage === 'achievements' ? 'active' : ''}`}
           onClick={() => setCurrentPage('achievements')}
         >
-          <span className="nav-icon">🏆</span>
-          <span>ACHIEVEMENTS</span>
+          <Trophy className="nav-hud-icon" />
+          <span className="sl-terminal-text">RANK</span>
         </button>
         <button
-          className={`nav-btn ${currentPage === 'system' ? 'active' : ''}`}
+          className={`hud-nav-btn ${currentPage === 'system' ? 'active' : ''}`}
           onClick={() => setCurrentPage('system')}
         >
-          <span className="nav-icon">⚙️</span>
-          <span>SYSTEM</span>
+          <Terminal className="nav-hud-icon" />
+          <span className="sl-terminal-text">SYS</span>
         </button>
       </div>
 
-      {/* Level up modal */}
+      {/* Overlays */}
       {showLevelUpModal && newLevel && (
         <LevelUpModal level={newLevel} onClose={closeModal} />
       )}
+      
+      {showAchievementUnlock && unlockedAchievement && (
+        <AchievementUnlockModal 
+          achievement={unlockedAchievement} 
+          onClose={closeAchievementModal} 
+        />
+      )}
 
-      {/* Toast */}
       {toast && <Toast message={toast} />}
+
+      <div className="stat-notifications-container">
+        <AnimatePresence>
+          {activeStatNotifications.map((notif, index) => (
+            <StatNotification
+              key={`stat-notif-${index}`}
+              stat={notif.stat}
+              amount={notif.amount}
+              onComplete={() => {
+                setActiveStatNotifications(prev => prev.filter((_, i) => i !== index));
+              }}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

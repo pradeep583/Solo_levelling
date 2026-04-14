@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --void: #03060c;
+  --panel: rgba(8, 13, 26, 0.75);
+  --panel-hover: rgba(12, 22, 45, 0.85);
+  --border-dim: rgba(0, 150, 255, 0.3);
+  --border-lit: rgba(0, 220, 255, 0.8);
+  --cyan: #00e5ff;
+  --cyan-dim: rgba(0, 229, 255, 0.15);
+  --cyan-glow: rgba(0, 229, 255, 0.5);
+  --white: #ffffff;
+  --grey: #829ab1;
+  --muted: rgba(26, 43, 76, 0.6);
+  --rank-s: #d946ef;
+  --rank-a: #3b82f6;
+  --rank-b: #0ea5e9;
+  --rank-c: #22c55e;
+  --rank-d: #f59e0b;
+  --rank-e: #ef4444;
+  --danger: #ef4444;
+  --danger-dim: rgba(239, 68, 68, 0.15);
+  --gold: #f59e0b;
+  --success: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  background-color: var(--void);
+  color: var(--white);
+  font-family: 'Share Tech Mono', monospace;
+  overflow: hidden;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SOLO LEVELING GLOBAL ATMOSPHERE 
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* CRT Scanlines */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    transparent 0px, 
+    transparent 2px, 
+    rgba(0, 200, 255, 0.03) 2px, 
+    rgba(0, 200, 255, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Glassmorphism Wrapper */
+.system-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: radial-gradient(circle at 50% -20%, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
+  filter: drop-shadow(0 0 50px rgba(0, 200, 255, 0.05));
+  backdrop-filter: blur(4px);
+}
+
+/* Typography Classes */
+.font-orbitron { font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+.font-mono { font-family: 'Share Tech Mono', monospace; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SOLO LEVELING UI PANELS 
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.sys-panel {
+  background: linear-gradient(180deg, var(--panel) 0%, rgba(4, 7, 15, 0.9) 100%);
+  border: 1px solid var(--border-dim);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 200, 255, 0.05),
+    0 4px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transition: all 0.2s ease-out;
+  backdrop-filter: blur(8px);
+}
+
+/* The iconic Solo Leveling Angled Cut */
+.sys-panel-angled {
+  clip-path: polygon(
+    0 0, 
+    calc(100% - 15px) 0, 
+    100% 15px, 
+    100% 100%, 
+    15px 100%, 
+    0 calc(100% - 15px)
+  );
+}
+
+.sys-panel:hover {
+  background: var(--panel-hover);
+  border-color: var(--border-lit);
+  box-shadow: 
+    inset 0 0 30px rgba(0, 200, 255, 0.1),
+    0 4px 15px rgba(0, 200, 255, 0.15);
+}
+
+/* Corner Glowing Brackets Utility */
+.corner-brackets {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+.corner-brackets::before,
+.corner-brackets::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+}
+.corner-brackets::before {
+  top: -1px; left: -1px;
+  border-top: 2px solid var(--cyan);
+  border-left: 2px solid var(--cyan);
+  box-shadow: -2px -2px 5px var(--cyan-glow);
+}
+.corner-brackets::after {
+  bottom: -1px; right: -1px;
+  border-bottom: 2px solid var(--cyan);
+  border-right: 2px solid var(--cyan);
+  box-shadow: 2px 2px 5px var(--cyan-glow);
+}
+
+/* Neon Text Glow */
+.text-glow {
+  text-shadow: 0 0 8px var(--cyan-glow), 0 0 15px var(--cyan-dim);
+}
+
+/* Solo Leveling Buttons */
+.sys-btn {
+  background: rgba(0, 229, 255, 0.05);
+  color: var(--cyan);
+  border: 1px solid var(--border-dim);
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  transition: all 0.2s ease-in-out;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  text-shadow: 0 0 5px var(--cyan-glow);
+}
+
+.sys-btn:hover {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px var(--cyan-glow);
+  transform: scale(1.02);
+}
+
+/* Scrollbar specific to system */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-dim);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* Glitch Animation */
+@keyframes glitch {
+  0% { transform: translate(0); text-shadow: none; }
+  20% { transform: translate(-2px, 2px); text-shadow: -2px 0 red, 2px 0 cyan; }
+  40% { transform: translate(-1px, -2px); text-shadow: 2px 0 red, -2px 0 cyan; }
+  60% { transform: translate(2px, 2px); text-shadow: -2px 0 red, 2px 0 cyan; }
+  80% { transform: translate(2px, -2px); text-shadow: 2px 0 red, -2px 0 cyan; }
+  100% { transform: translate(0); text-shadow: none; }
+}
+.glitch-once {
+  animation: glitch 0.3s linear 1;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 4, 10, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Danger Panel (Surprise Quest) */
+.danger-panel {
+  border: 1px solid var(--danger) !important;
+  box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.1), 0 0 20px rgba(239, 68, 68, 0.2) !important;
+}
+.danger-panel .corner-brackets::before {
+  border-color: var(--danger) !important;
+  box-shadow: -2px -2px 5px rgba(239, 68, 68, 0.5) !important;
+}
+.danger-panel .corner-brackets::after {
+  border-color: var(--danger) !important;
+  box-shadow: 2px 2px 5px rgba(239, 68, 68, 0.5) !important;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 10px var(--cyan-glow); }
+  50% { box-shadow: 0 0 25px var(--cyan-glow), inset 0 0 15px var(--cyan-dim); }
+  100% { box-shadow: 0 0 10px var(--cyan-glow); }
+}
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}

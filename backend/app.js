@@ -10,6 +10,7 @@ import questRoutes from './routes/quests.js';
 import logRoutes from './routes/log.js';
 import penaltyRoutes from './routes/penalties.js';
 import achievementRoutes from './routes/achievements.js';
+import syncRoutes from './routes/sync.js';
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api', questRoutes);
 app.use('/api', logRoutes);
 app.use('/api', penaltyRoutes);
 app.use('/api', achievementRoutes);
+app.use('/api', syncRoutes);
 
 // 404 handler
 app.use((req, res) => {

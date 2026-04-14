@@ -1,74 +1,84 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { getXPToNextLevel, getRankFromPoints } from '../../../utils/gameUtils';
+import { getXPToNextLevel } from '../../../utils/gameUtils';
 import './PlayerCard.css';
 
 const PlayerCard = ({ player }) => {
   const xpToNext = getXPToNextLevel(player.totalXP, player.level);
   const xpRequired = player.level * 100;
-  const xpInLevel = player.totalXP - (xpRequired - player.level * 100);
-  const progress = ((xpRequired - xpToNext) / xpRequired) * 100;
+  const progress = Math.min(100, (player.totalXP / xpRequired) * 100);
+  
+  const rank = player.rank || (player.level < 5 ? 'E' : player.level < 10 ? 'D' : player.level < 15 ? 'C' : player.level < 20 ? 'B' : 'A');
 
   return (
     <motion.div
-      className="player-card-enhanced"
+      className="sl-card-angled player-card-enhanced"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Ornate top border */}
-      <div className="player-card-ornate-top" />
+      <div className="sl-hud-corners" />
+      
+      {/* Background scanlines for card */}
+      <div className="player-card-bg-noise" />
 
-      {/* Main content */}
       <div className="player-card-content">
-        {/* Left section - Rank & Level */}
-        <div className="player-card-left">
-          <div className="player-level-display">
-            <div className="player-level-number">{player.level}</div>
-            <div className="player-level-label">LEVEL</div>
-          </div>
+        {/* Rank Identity */}
+        <div className={`player-rank-hexagon rank-${rank.toLowerCase()}`}>
+          <div className="rank-text">{rank}</div>
+          <div className="rank-sub">RANK</div>
         </div>
 
-        {/* Center section - Info */}
-        <div className="player-card-center">
-          <div className="player-name">{player.name}</div>
-          <div className="player-title">{player.title}</div>
-          <div className="player-streak">
-            <span className="streak-icon">🔥</span>
-            <span className="streak-value">{player.streak}</span>
-            <span className="streak-label">DAYS</span>
-          </div>
-        </div>
-
-        {/* Right section - Stats summary */}
-        <div className="player-card-right">
-          <div className="player-stat-mini">
-            <span className="mini-label">XP</span>
-            <span className="mini-value">{player.totalXP}</span>
+        {/* Info Column */}
+        <div className="player-main-info">
+          <div className="player-meta-id sl-terminal-text">[ ID: HUNTER_ {player.name.toUpperCase()} ]</div>
+          <div className="player-name-glitch" data-text={player.name}>{player.name}</div>
+          <div className="player-class-title">{player.title || 'NOVICE HUNTER'}</div>
+          
+          <div className="player-stats-row">
+            <div className="mini-stat">
+              <span className="mini-label">LEVEL</span>
+              <span className="mini-value-gold">{player.level}</span>
+            </div>
+            <div className="mini-stat">
+              <span className="mini-label">STREAK</span>
+              <span className="mini-value-cyan">{player.streak}D</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* XP Bar */}
-      <div className="player-xp-section">
-        <div className="xp-label">
-          <span className="xp-current">{Math.floor(xpInLevel)}</span>
-          <span className="xp-separator">/</span>
-          <span className="xp-required">{xpRequired}</span>
+      {/* Modernized HUD XP Gauge */}
+      <div className="player-xp-hud">
+        <div className="xp-label-row">
+          <span className="xp-title sl-terminal-text">EXPERIENCE_GAUGE</span>
+          <span className="xp-countdown">NEXT_LVL: -{xpToNext} XP</span>
         </div>
-        <div className="xp-bar-container">
+        
+        <div className="xp-gauge-container">
           <motion.div
-            className="xp-bar-fill"
+            className="xp-gauge-fill"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
           />
+          {/* Gauge Markers */}
+          <div className="gauge-markers">
+            {[...Array(10)].map((_, i) => <div key={i} className="marker" />)}
+          </div>
         </div>
-        <div className="xp-to-next">+{xpToNext} to Level {player.level + 1}</div>
+
+        <div className="xp-values-row">
+          <span className="xp-current">{Math.floor(player.totalXP)}</span>
+          <span className="xp-divider">/</span>
+          <span className="xp-target">{xpRequired}</span>
+        </div>
       </div>
 
-      {/* Ornate bottom border */}
-      <div className="player-card-ornate-bottom" />
+      <div className="player-card-footer">
+        <div className="system-status-blink" />
+        <span className="sl-terminal-text">CONNECTION: STABLE // ACCESS: GRANTED</span>
+      </div>
     </motion.div>
   );
 };

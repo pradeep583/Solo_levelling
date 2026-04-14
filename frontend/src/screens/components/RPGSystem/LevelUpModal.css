@@ -1,198 +1,147 @@
-/* ========== LEVEL UP MODAL (CINEMATIC) ========== */
+/* ========== LEVEL UP MODAL (SYSTEM ASCENSION REBOOT) ========== */
 
 .levelup-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(5, 8, 18, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3500;
+  z-index: 5000;
+  overflow: hidden;
 }
 
-.levelup-glow {
+.levelup-flash {
   position: absolute;
   inset: 0;
+  background: white;
+  z-index: 5001;
   pointer-events: none;
 }
 
-.levelup-modal-content {
-  position: relative;
+.levelup-modal-content-enhanced {
   width: 90%;
-  max-width: 400px;
-  background: linear-gradient(135deg, rgba(5, 30, 15, 0.95) 0%, rgba(10, 35, 20, 0.95) 100%);
-  border: 3px solid #8bc34a;
-  border-radius: 16px;
-  padding: 50px 40px;
-  text-align: center;
-  box-shadow: 
-    0 0 60px rgba(139, 195, 74, 0.4),
-    inset 0 0 40px rgba(139, 195, 74, 0.1),
-    0 0 100px rgba(100, 150, 0, 0.2);
-  backdrop-filter: blur(10px);
-  z-index: 1;
-}
-
-/* Scan lines */
-.levelup-modal-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(139, 195, 74, 0.03) 0px,
-    rgba(139, 195, 74, 0.03) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-  border-radius: 14px;
-  pointer-events: none;
-}
-
-/* Ornate corners */
-.levelup-corner {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border: 3px solid #8bc34a;
-}
-
-.levelup-corner-tl {
-  top: -3px;
-  left: -3px;
-  border-right: none;
-  border-bottom: none;
-  border-radius: 12px 0 0 0;
-}
-
-.levelup-corner-tr {
-  top: -3px;
-  right: -3px;
-  border-left: none;
-  border-bottom: none;
-  border-radius: 0 12px 0 0;
-}
-
-.levelup-corner-bl {
-  bottom: -3px;
-  left: -3px;
-  border-right: none;
-  border-top: none;
-  border-radius: 0 0 0 12px;
-}
-
-.levelup-corner-br {
-  bottom: -3px;
-  right: -3px;
-  border-left: none;
-  border-top: none;
-  border-radius: 0 0 12px 0;
-}
-
-.levelup-inner {
+  max-width: 500px;
+  background: rgba(10, 15, 30, 0.98);
+  padding: 40px;
   position: relative;
+  box-shadow: 
+    0 0 100px rgba(0, 0, 0, 1),
+    0 0 40px var(--sl-gold-glow);
+  border: 1px solid var(--sl-gold);
+}
+
+.levelup-inner-hud {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  position: relative;
+  z-index: 2;
+}
+
+.levelup-readout-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255, 204, 0, 0.2);
+  padding-bottom: 8px;
+}
+
+.levelup-header-main {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--sl-gold);
+  text-align: center;
+  text-shadow: 0 0 15px var(--sl-gold-glow);
+}
+
+.levelup-visual-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+  position: relative;
+}
+
+.levelup-icon-pulse {
+  position: absolute;
+  z-index: 0;
+}
+
+.levelup-number-huge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 120px;
+  font-weight: 950;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 
+    0 0 40px var(--sl-gold-glow),
+    0 0 80px rgba(255, 204, 0, 0.2);
   z-index: 1;
 }
 
-/* Header */
-.levelup-header {
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #8bc34a;
-  text-shadow: 0 0 20px rgba(139, 195, 74, 0.7);
-  margin-bottom: 16px;
+.levelup-rank-title {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-/* Level number */
-.levelup-level {
-  font-size: 100px;
-  font-weight: 900;
-  color: #8bc34a;
-  text-shadow: 
-    0 0 30px rgba(139, 195, 74, 0.8),
-    0 4px 20px rgba(139, 195, 74, 0.3);
-  line-height: 1;
-  margin: 20px 0;
+.levelup-rank-title span {
+  font-size: 10px;
+  color: var(--text-muted);
 }
 
-/* Subtitle */
-.levelup-subtitle {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #a8c975;
-  margin-bottom: 8px;
-}
-
-/* Title */
-.levelup-title {
+.rank-name-gold {
+  font-family: 'Orbitron', sans-serif;
   font-size: 28px;
   font-weight: 900;
+  color: #fff;
   letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #c8e6c9;
-  text-shadow: 0 0 15px rgba(139, 195, 74, 0.5);
-  margin-bottom: 20px;
+  background: linear-gradient(to bottom, #fff, var(--sl-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Divider */
-.levelup-divider {
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(139, 195, 74, 0.5), transparent);
-  margin: 20px 0;
-  transform-origin: center;
+.levelup-status-strip {
+  background: rgba(0, 255, 136, 0.1);
+  padding: 10px;
+  text-align: center;
+  border: 1px solid rgba(0, 255, 136, 0.3);
 }
 
-/* Stats boost */
-.levelup-stats-boost {
-  font-size: 14px;
+.levelup-status-strip div {
+  font-size: 12px;
   font-weight: 900;
+  color: var(--sl-green);
+  letter-spacing: 2px;
+}
+
+.levelup-reward-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid var(--sl-gold);
+}
+
+.levelup-reward-box span {
+  font-size: 11px;
+  color: #fff;
   letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #d4af37;
-  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
-  margin: 20px 0;
 }
 
-/* Button */
-.levelup-btn {
-  margin-top: 24px;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, rgba(139, 195, 74, 0.2) 0%, rgba(100, 150, 0, 0.1) 100%);
-  border: 2px solid #8bc34a;
-  border-radius: 8px;
-  color: #8bc34a;
-  font-size: 14px;
+.levelup-continue-btn {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 12px !important;
   font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Share Tech Mono', monospace;
-  text-shadow: 0 0 10px rgba(139, 195, 74, 0.3);
-}
-
-.levelup-btn:hover {
-  background: linear-gradient(135deg, rgba(139, 195, 74, 0.35) 0%, rgba(100, 150, 0, 0.2) 100%);
-  box-shadow: 0 0 30px rgba(139, 195, 74, 0.5);
-  border-color: #c8e6c9;
-}
-
-/* Particles */
-.levelup-particle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 10px;
-  height: 10px;
-  background: #8bc34a;
-  border-radius: 50%;
-  box-shadow: 0 0 15px rgba(139, 195, 74, 0.8);
-  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

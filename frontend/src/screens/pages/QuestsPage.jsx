@@ -24,6 +24,7 @@ const QuestsPage = ({ todayQuests, onCompleteQuest }) => {
   };
 
   const completedCount = Object.values(todayQuests).filter(Boolean).length;
+  const completionRate = (completedCount / 10 * 100).toFixed(0);
 
   return (
     <motion.div
@@ -34,29 +35,41 @@ const QuestsPage = ({ todayQuests, onCompleteQuest }) => {
       className="quests-page-wrapper"
     >
       {/* Header with progress */}
-      <div className="quests-header">
-        <div className="quests-title">DAILY QUESTS</div>
-        <div className="quests-progress">
-          <span className="progress-number">{completedCount}/10</span>
-          <div className="progress-bar-mini">
-            <div
-              className="progress-fill-mini"
-              style={{ width: `${(completedCount / 10) * 100}%` }}
+      <div className="sl-card-angled quests-header-hud">
+        <div className="sl-hud-corners" />
+        <div className="quests-hud-meta sl-terminal-text">[ PROTOCOL_STATUS: ACTIVE ]</div>
+        
+        <div className="quests-progress-hud">
+          <div className="progress-info-row">
+            <span className="sl-terminal-text">COMPLETION_RATE</span>
+            <span className="percentage-reading sl-terminal-text">{completionRate}%</span>
+          </div>
+          
+          <div className="hud-progress-gauge">
+            <motion.div
+              className="hud-gauge-fill"
+              initial={{ width: 0 }}
+              animate={{ width: `${completionRate}%` }}
+              transition={{ duration: 1, ease: 'easeOut' }}
             />
+          </div>
+          
+          <div className="quests-count-hud sl-terminal-text">
+            <span>UNITS_CLEARED: {completedCount} / 10</span>
           </div>
         </div>
       </div>
 
       {/* Quest list */}
-      <div className="quests-list">
+      <div className="quests-flex-container">
         {questList.map((quest, idx) => (
           <motion.div
             key={quest.id}
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.03 }}
             onClick={() => handleQuestClick(quest, quest.id)}
-            style={{ cursor: 'pointer' }}
+            className="quest-item-clickable"
           >
             <QuestCard
               quest={quest}

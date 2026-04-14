@@ -1,61 +1,78 @@
-/* ========== QUESTS PAGE STYLES ========== */
+/* ========== QUESTS PAGE "SYSTEM HUD" REBOOT ========== */
 
 .quests-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.quests-header-hud {
+  position: relative;
+  padding: 24px;
+  background: rgba(5, 8, 18, 0.95);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.quests-header {
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(30, 144, 255, 0.05) 100%);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-
-.quests-title {
-  font-size: 16px;
-  font-weight: 900;
+.quests-hud-meta {
+  font-size: 10px;
+  color: var(--text-muted);
   letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #00d4ff;
-  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-  margin-bottom: 12px;
 }
 
-.quests-progress {
+.quests-progress-hud {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
 }
 
-.progress-number {
-  font-size: 14px;
-  font-weight: 800;
-  color: #00d4ff;
-  min-width: 40px;
+.progress-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
-.progress-bar-mini {
-  flex: 1;
+.progress-info-row span {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+.percentage-reading {
+  font-size: 24px !important;
+  font-weight: 900;
+  color: var(--cyan) !important;
+  text-shadow: 0 0 10px var(--cyan);
+}
+
+.hud-progress-gauge {
   height: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 2px;
   overflow: hidden;
-  border: 1px solid rgba(0, 212, 255, 0.2);
 }
 
-.progress-fill-mini {
+.hud-gauge-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00d4ff, #1e90ff);
-  border-radius: 3px;
-  box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg, var(--cyan), var(--sl-blue-deep));
+  box-shadow: 0 0 15px var(--cyan);
 }
 
-.quests-list {
+.quests-count-hud {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+.quests-flex-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+}
+
+.quest-item-clickable {
+  cursor: pointer;
 }

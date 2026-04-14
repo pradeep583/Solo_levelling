@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Terminal, RefreshCw, Trash2, Info } from 'lucide-react';
 import { clearAllData } from '../../utils/storageManager';
 
 const SystemPage = ({ player, onResetQuests }) => {
@@ -10,80 +11,68 @@ const SystemPage = ({ player, onResetQuests }) => {
     }
   };
 
+  const systemData = [
+    { label: 'PLAYER_NAME', value: player.name },
+    { label: 'CURRENT_LEVEL', value: player.level },
+    { label: 'CLASS_TITLE', value: player.title },
+    { label: 'TOTAL_EXPERIENCE', value: `${player.totalXP} XP` },
+    { label: 'STREAK_STABILITY', value: `${player.streak} DAYS` },
+    { label: 'LAST_SYNCHRONIZED', value: new Date().toLocaleDateString() }
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
+      className="system-page-hud"
     >
-      {/* System info */}
-      <div className="panel">
-        <h2 style={{ fontSize: '16px', marginBottom: '12px', color: '#00d4ff' }}>
-          SYSTEM INFO
-        </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px' }}>
-          <div>
-            <strong style={{ color: '#7a8399' }}>Player Name:</strong> {player.name}
-          </div>
-          <div>
-            <strong style={{ color: '#7a8399' }}>Current Level:</strong> {player.level}
-          </div>
-          <div>
-            <strong style={{ color: '#7a8399' }}>Title:</strong> {player.title}
-          </div>
-          <div>
-            <strong style={{ color: '#7a8399' }}>Total XP:</strong> {player.totalXP}
-          </div>
-          <div>
-            <strong style={{ color: '#7a8399' }}>Streak:</strong> {player.streak} days
-          </div>
-          <div>
-            <strong style={{ color: '#7a8399' }}>Current Date:</strong>{' '}
-            {new Date().toLocaleDateString()}
-          </div>
+      {/* System Readout */}
+      <div className="sl-card-angled system-hud-panel">
+        <div className="sl-hud-corners" />
+        <div className="panel-header-hud sl-terminal-text">
+          <Terminal size={14} className="accent" />
+          <span>SYSTEM_READOUT</span>
+        </div>
+        <div className="system-data-grid">
+          {systemData.map((data, i) => (
+            <div key={i} className="readout-item">
+              <span className="readout-label sl-terminal-text">{data.label}</span>
+              <span className="readout-value">{data.value}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="panel">
-        <h2 style={{ fontSize: '16px', marginBottom: '12px', color: '#00d4ff' }}>ACTIONS</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <button
-            onClick={onResetQuests}
-            style={{
-              width: '100%',
-              padding: '10px',
-              borderColor: '#00d4ff',
-              color: '#00d4ff',
-            }}
-          >
-            Reset Today's Quests
+      {/* Control Commands */}
+      <div className="sl-card-angled system-hud-panel">
+        <div className="sl-hud-corners" />
+        <div className="panel-header-hud sl-terminal-text">
+          <RefreshCw size={14} className="accent" />
+          <span>COMMAND_INPUT</span>
+        </div>
+        <div className="system-actions-hud">
+          <button className="hud-cmd-btn btn-cyan" onClick={onResetQuests}>
+            [ FORCE_RELOAD_QUESTS ]
           </button>
-          <button
-            onClick={handleResetData}
-            className="btn-danger"
-            style={{
-              width: '100%',
-              padding: '10px',
-            }}
-          >
-            Clear All Data
+          <button className="hud-cmd-btn btn-red" onClick={handleResetData}>
+            [ PURGE_SYSTEM_DATA ]
           </button>
         </div>
       </div>
 
-      {/* Info */}
-      <div className="panel">
-        <h2 style={{ fontSize: '16px', marginBottom: '12px', color: '#00d4ff' }}>ABOUT</h2>
-        <p style={{ fontSize: '12px', lineHeight: '1.8', color: '#b0b8d0' }}>
-          This is a Solo Leveling-inspired personal RPG system. Track your daily quests, level up,
-          unlock achievements, and improve your stats across 6 categories.
-        </p>
-        <p style={{ fontSize: '12px', lineHeight: '1.8', color: '#b0b8d0', marginTop: '12px' }}>
-          Complete quests to earn XP and stat points. Penalties are applied for missed quests on
-          the next day. Reach higher ranks (D → C → B → A → S) in each stat!
-        </p>
+      {/* System Documentation */}
+      <div className="sl-card-angled system-hud-panel">
+        <div className="sl-hud-corners" />
+        <div className="panel-header-hud sl-terminal-text">
+          <Info size={14} className="accent" />
+          <span>SYSTEM_DOCS</span>
+        </div>
+        <div className="docs-text-hud sl-terminal-text">
+          <p>This is a Solo Leveling-inspired personal RPG system. Track your daily quests, level up, and improve your stats across 6 categories.</p>
+          <p>PENALTY_PROTOCOL: Missed quests result in stat reduction on the next cycle.</p>
+        </div>
       </div>
     </motion.div>
   );

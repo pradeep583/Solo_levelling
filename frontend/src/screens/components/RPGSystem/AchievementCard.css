@@ -1,0 +1,142 @@
+/* ========== ACHIEVEMENT CARD "SYSTEM HUD" REBOOT ========== */
+
+.achievement-card-enhanced {
+  position: relative;
+  background: rgba(5, 8, 18, 0.9);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  height: 100%;
+}
+
+.achievement-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+  animation: sl-achievement-scan 3s linear infinite;
+  opacity: 0.2;
+}
+
+@keyframes sl-achievement-scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(180px); }
+}
+
+.achievement-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.achievement-lucide-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.icon-active {
+  color: var(--cyan);
+  filter: drop-shadow(0 0 10px var(--cyan));
+}
+
+.icon-dim {
+  color: var(--text-muted);
+  opacity: 0.3;
+}
+
+.achievement-info-main {
+  flex: 1;
+}
+
+.achievement-name-card {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.achievement-desc-card {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.achievement-status-hud {
+  width: 100%;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.status-readout-cleared {
+  color: var(--sl-green);
+  font-weight: 800;
+}
+
+.status-readout-locked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.lock-mini-icon {
+  width: 10px;
+  height: 10px;
+}
+
+/* Legendary styling */
+.legendary-rarity {
+  border-color: var(--sl-gold) !important;
+}
+
+.legendary-rarity.achievement-unlocked {
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+}
+
+.legendary-rarity .icon-active {
+  color: var(--sl-gold);
+  filter: drop-shadow(0 0 15px var(--sl-gold));
+}
+
+.legendary-glimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 204, 0, 0.3) 50%,
+    transparent 55%
+  );
+  background-size: 200% 200%;
+  animation: sl-glimmer 3s infinite;
+}
+
+@keyframes sl-glimmer {
+  0% { background-position: -200% -200%; }
+  100% { background-position: 200% 200%; }
+}
+
+/* Locked state */
+.achievement-locked {
+  filter: grayscale(1);
+  opacity: 0.6;
+}

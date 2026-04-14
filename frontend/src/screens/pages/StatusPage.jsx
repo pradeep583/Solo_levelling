@@ -6,12 +6,12 @@ import { getRankFromPoints } from '../../utils/gameUtils';
 
 const StatusPage = ({ player, stats }) => {
   const statList = [
-    { key: 'intelligence', icon: '🧠', name: 'Intelligence' },
-    { key: 'physique', icon: '💪', name: 'Physique' },
-    { key: 'perception', icon: '👁️', name: 'Perception' },
-    { key: 'tech', icon: '📡', name: 'Tech' },
-    { key: 'finance', icon: '💰', name: 'Finance' },
-    { key: 'discipline', icon: '🔥', name: 'Discipline' },
+    { key: 'intelligence', icon: 'intelligence', name: 'Intelligence' },
+    { key: 'physique', icon: 'physique', name: 'Physique' },
+    { key: 'perception', icon: 'perception', name: 'Perception' },
+    { key: 'tech', icon: 'tech', name: 'Tech' },
+    { key: 'finance', icon: 'finance', name: 'Finance' },
+    { key: 'discipline', icon: 'discipline', name: 'Discipline' },
   ];
 
   return (
@@ -25,21 +25,15 @@ const StatusPage = ({ player, stats }) => {
       <PlayerCard player={player} />
 
       {/* Stats grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+      <div className="status-grid">
         {statList.map((stat, idx) => (
-          <motion.div
+          <StatCard
             key={stat.key}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05 }}
-          >
-            <StatCard
-              icon={stat.icon}
-              name={stat.name}
-              points={stats[stat.key]}
-              rank={getRankFromPoints(stats[stat.key])}
-            />
-          </motion.div>
+            icon={stat.icon}
+            name={stat.name}
+            points={stats[stat.key]}
+            rank={getRankFromPoints(stats[stat.key])}
+          />
         ))}
       </div>
     </motion.div>

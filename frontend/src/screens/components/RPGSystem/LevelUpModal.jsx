@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ChevronUp, TrendingUp } from 'lucide-react';
 import { getTitleByLevel } from '../../../utils/gameUtils';
 import './LevelUpModal.css';
 
@@ -9,126 +10,99 @@ const LevelUpModal = ({ level, onClose }) => {
   return (
     <motion.div
       className="levelup-modal-overlay"
-      initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-      animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
-      exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      {/* Background glow */}
-      <motion.div
-        className="levelup-glow"
-        animate={{
-          boxShadow: [
-            '0 0 50px rgba(139, 195, 74, 0.1)',
-            '0 0 150px rgba(139, 195, 74, 0.3)',
-            '0 0 50px rgba(139, 195, 74, 0.1)',
-          ],
-        }}
-        transition={{ duration: 2, repeat: Infinity }}
+      <div className="sl-scanlines" />
+      
+      {/* Cinematic Flash */}
+      <motion.div 
+        className="levelup-flash"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{ duration: 1, times: [0, 0.2, 1] }}
       />
 
-      {/* Main modal */}
       <motion.div
-        className="levelup-modal-content"
-        initial={{ scale: 0.5, opacity: 0, rotateY: 90 }}
+        className="sl-card-angled levelup-modal-content-enhanced"
+        initial={{ scale: 0.8, opacity: 0, rotateY: 30 }}
         animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-        exit={{ scale: 0.5, opacity: 0, rotateY: 90 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+        exit={{ scale: 0.8, opacity: 0, rotateY: -30 }}
+        transition={{ type: 'spring', damping: 15, stiffness: 150 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Ornate corners */}
-        <div className="levelup-corner levelup-corner-tl" />
-        <div className="levelup-corner levelup-corner-tr" />
-        <div className="levelup-corner levelup-corner-bl" />
-        <div className="levelup-corner levelup-corner-br" />
+        {/* Frame Corners */}
+        <div className="sl-frame-corner sl-corner-tl" />
+        <div className="sl-frame-corner sl-corner-tr" />
+        <div className="sl-frame-corner sl-corner-bl" />
+        <div className="sl-frame-corner sl-corner-br" />
 
-        {/* Content */}
-        <div className="levelup-inner">
-          {/* Header */}
+        <div className="levelup-inner-hud">
+          {/* Technical Readout Top */}
+          <div className="levelup-readout-top sl-terminal-text">
+            <span>[ SYSTEM_NOTICE ]</span>
+            <span>ID: LVL_UP_V4.0</span>
+          </div>
+
           <motion.div
-            className="levelup-header"
+            className="levelup-header-main"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.3 }}
           >
-            ⭐ LEVEL UP! ⭐
+            LEVEL_ASCENSION_PROTOCOL
           </motion.div>
 
-          {/* Level number */}
-          <motion.div
-            className="levelup-level"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4, type: 'spring' }}
-          >
-            {level}
-          </motion.div>
+          <div className="levelup-visual-center">
+            <motion.div
+              className="levelup-icon-pulse"
+              animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <ChevronUp size={80} strokeWidth={3} color="var(--sl-gold)" />
+            </motion.div>
+            
+            <motion.div
+              className="levelup-number-huge"
+              initial={{ opacity: 0, filter: 'blur(20px)' }}
+              animate={{ opacity: 1, filter: 'blur(0px)' }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            >
+              {level}
+            </motion.div>
+          </div>
 
-          {/* Subtitle */}
           <motion.div
-            className="levelup-subtitle"
+            className="levelup-rank-title"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            New Rank Unlocked
-          </motion.div>
-
-          {/* Title */}
-          <motion.div
-            className="levelup-title"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
-            {title}
+            <span className="sl-terminal-text">RANK_CREDENTIAL:</span>
+            <div className="rank-name-gold">{title}</div>
           </motion.div>
 
-          {/* Divider */}
-          <motion.div
-            className="levelup-divider"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 1 }}
-          />
+          <div className="levelup-status-strip">
+            <div className="sl-terminal-text">[ STATUS: VALIDATED ]</div>
+          </div>
 
-          {/* Stats boost info */}
-          <motion.div
-            className="levelup-stats-boost"
+          <div className="levelup-reward-box">
+            <TrendingUp size={16} />
+            <span className="sl-terminal-text">GLOBAL_STAT_UPPER_LIMIT_EXTENDED</span>
+          </div>
+
+          <motion.button
+            className="sl-button levelup-continue-btn"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-          >
-            ✨ ALL STATS +5 ✨
-          </motion.div>
-
-          {/* Button */}
-          <motion.button
-            className="levelup-btn"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4 }}
             onClick={onClose}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ letterSpacing: '4px', backgroundColor: 'var(--sl-gold)', color: '#000' }}
           >
-            CONTINUE →
+            CONTINUE_SYSTEM_OPERATIONS
           </motion.button>
-
-          {/* Particle effects */}
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="levelup-particle"
-              initial={{ x: 0, y: 0, opacity: 1 }}
-              animate={{
-                x: (Math.random() - 0.5) * 250,
-                y: (Math.random() - 0.5) * 250,
-                opacity: 0,
-              }}
-              transition={{ duration: 2.5, delay: 0.3 + i * 0.1 }}
-            />
-          ))}
         </div>
       </motion.div>
     </motion.div>

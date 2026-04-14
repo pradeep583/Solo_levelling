@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Trophy, ShieldCheck, Award } from 'lucide-react';
 import './AchievementUnlockModal.css';
 
 const AchievementUnlockModal = ({ achievement, isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
-      const timer = setTimeout(onClose, 4000);
+      const timer = setTimeout(onClose, 5000);
       return () => clearTimeout(timer);
     }
   }, [isOpen, onClose]);
@@ -14,103 +15,92 @@ const AchievementUnlockModal = ({ achievement, isOpen, onClose }) => {
 
   return (
     <motion.div
-      className="achievement-unlock-overlay"
+      className="achievement-unlock-overlay-hud"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      {/* Background glow */}
+      <div className="sl-scanlines" />
+      
+      {/* Background glow based on rarity */}
       <motion.div
-        className="achievement-bg-glow"
+        className={`achievement-unlock-glow ${achievement.rarity.toLowerCase()}-glow`}
         animate={{
-          boxShadow: [
-            '0 0 50px rgba(212, 175, 55, 0.1)',
-            '0 0 100px rgba(212, 175, 55, 0.3)',
-            '0 0 50px rgba(212, 175, 55, 0.1)',
-          ],
+          opacity: [0.3, 0.6, 0.3],
+          scale: [1, 1.2, 1],
         }}
-        transition={{ duration: 2, repeat: Infinity }}
+        transition={{ duration: 3, repeat: Infinity }}
       />
 
-      {/* Center content */}
       <motion.div
-        className="achievement-unlock-content"
-        initial={{ scale: 0, opacity: 0, rotateZ: -10 }}
-        animate={{ scale: 1, opacity: 1, rotateZ: 0 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+        className={`sl-card-angled achievement-unlock-content-hud ${achievement.rarity.toLowerCase()}-frame`}
+        initial={{ scale: 0.5, opacity: 0, rotateY: 90 }}
+        animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+        transition={{ type: 'spring', damping: 15, stiffness: 100 }}
       >
-        {/* Ornate frame */}
-        <div className="achievement-frame-top" />
-        <div className="achievement-frame-bottom" />
+        {/* Frame Corners */}
+        <div className="sl-frame-corner sl-corner-tl" />
+        <div className="sl-frame-corner sl-corner-tr" />
+        <div className="sl-frame-corner sl-corner-bl" />
+        <div className="sl-frame-corner sl-corner-br" />
 
-        {/* Icon */}
-        <motion.div
-          className="achievement-icon-unlock"
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          {achievement.icon}
-        </motion.div>
+        <div className="achievement-inner-hud">
+          <div className="achievement-readout-hud sl-terminal-text">
+            <span>[ SYSTEM_ACHIEVEMENT ]</span>
+            <span>ID: {achievement.id.toString().padStart(4, '0')}</span>
+          </div>
 
-        {/* UNLOCKED text */}
-        <motion.div
-          className="achievement-status"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          ⭐ ACHIEVEMENT UNLOCKED ⭐
-        </motion.div>
+          <div className="achievement-icon-wrapper-hud">
+            <motion.div
+              className="achievement-icon-pulse-hud"
+              animate={{ boxShadow: ['0 0 20px rgba(0,0,0,0)', '0 0 50px currentColor', '0 0 20px rgba(0,0,0,0)'] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              {achievement.rarity === 'Legendary' ? <Trophy size={60} /> : <Award size={60} />}
+            </motion.div>
+          </div>
 
-        {/* Name */}
-        <motion.div
-          className="achievement-name-unlock"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          {achievement.name}
-        </motion.div>
+          <motion.div 
+            className="achievement-status-tag-hud sl-terminal-text"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            {achievement.rarity.toUpperCase()}_RECOGNITION_VALIDATED
+          </motion.div>
 
-        {/* Description */}
-        <motion.div
-          className="achievement-desc-unlock"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          {achievement.description}
-        </motion.div>
+          <motion.h2 
+            className="achievement-name-hud"
+            initial={{ opacity: 0, letterSpacing: '10px' }}
+            animate={{ opacity: 1, letterSpacing: '2px' }}
+            transition={{ delay: 0.6 }}
+          >
+            {achievement.name.toUpperCase()}
+          </motion.h2>
 
-        {/* Particle effects */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="achievement-particle"
-            initial={{
-              x: 0,
-              y: 0,
-              opacity: 1,
-            }}
-            animate={{
-              x: (Math.random() - 0.5) * 200,
-              y: (Math.random() - 0.5) * 200,
-              opacity: 0,
-            }}
-            transition={{ duration: 2, delay: 0.2 + i * 0.1 }}
-          />
-        ))}
+          <motion.p 
+            className="achievement-desc-hud sl-terminal-text"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            {achievement.description.toUpperCase()}
+          </motion.p>
+
+          <div className="achievement-footer-hud sl-terminal-text">
+            [ ID: QUEST_VALIDATION_COMPLETED ]
+          </div>
+        </div>
       </motion.div>
 
-      {/* Click hint */}
       <motion.div
-        className="achievement-hint"
+        className="achievement-continue-hint sl-terminal-text"
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ duration: 3, delay: 1 }}
+        animate={{ opacity: [0, 0.8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, delay: 2 }}
       >
-        Click to continue
+        TOUCH_ANYWHERE_TO_SYNCHRONIZE
       </motion.div>
     </motion.div>
   );

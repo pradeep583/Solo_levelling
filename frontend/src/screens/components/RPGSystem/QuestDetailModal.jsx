@@ -1,9 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { 
+  User, Eye, Video, BookOpen, Dumbbell, 
+  Code, Cpu, Grid, TrendingUp, Map, AlertTriangle, X 
+} from 'lucide-react';
 import './QuestDetailModal.css';
 
 const QuestDetailModal = ({ quest, isOpen, onClose, onComplete, completed }) => {
   if (!isOpen) return null;
+
+  const IconMap = {
+    posture: User,
+    eye: Eye,
+    video: Video,
+    book: BookOpen,
+    workout: Dumbbell,
+    code: Code,
+    tech: Cpu,
+    strategy: Grid,
+    finance: TrendingUp,
+    travel: Map
+  };
+
+  const Icon = IconMap[quest.icon] || Grid;
 
   return (
     <motion.div
@@ -14,98 +33,70 @@ const QuestDetailModal = ({ quest, isOpen, onClose, onComplete, completed }) => 
       onClick={onClose}
     >
       <motion.div
-        className="quest-modal-content"
-        initial={{ scale: 0.8, opacity: 0, y: 50 }}
+        className="sl-card-angled quest-modal-content-enhanced"
+        initial={{ scale: 0.9, opacity: 0, y: 30 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.8, opacity: 0, y: 50 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        exit={{ scale: 0.9, opacity: 0, y: 30 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Ornate Corners */}
-        <div className="quest-corner quest-corner-tl" />
-        <div className="quest-corner quest-corner-tr" />
-        <div className="quest-corner quest-corner-bl" />
-        <div className="quest-corner quest-corner-br" />
+        <div className="sl-hud-corners" />
+        
+        {/* HUD Scanner Line */}
+        <div className="modal-hud-scan" />
 
-        {/* Header with Icon */}
-        <div className="quest-modal-header">
-          <div className="quest-icon-large">{quest.icon}</div>
-          <div className="quest-modal-title">QUEST INFO</div>
-          <button className="quest-close-btn" onClick={onClose}>✕</button>
+        <div className="quest-modal-header-hud">
+          <div className="header-left-hud">
+            <span className="sl-terminal-text">[ QUEST_INFO ]</span>
+          </div>
+          <button className="hud-close-btn" onClick={onClose}><X /></button>
         </div>
 
-        {/* Divider */}
-        <div className="quest-divider" />
-
-        {/* Quest Name & Description */}
-        <div className="quest-modal-description">
-          <div className="quest-name-large">{quest.name}</div>
-          <div className="quest-description-text">[Daily Quest: {quest.name} has arrived.]</div>
-        </div>
-
-        {/* Goals Section */}
-        <div className="quest-section">
-          <div className="section-title">━━ GOALS ━━</div>
-          <div className="goals-list">
-            <div className="goal-item">
-              <span className="goal-name">Objective</span>
-              <span className="goal-progress">[100/100] ✓</span>
+        <div className="quest-modal-body-hud">
+          <div className="quest-visual-header">
+            <div className="quest-icon-main-wrapper">
+              <Icon className="quest-lucide-large" />
+              <div className="icon-ripple" />
             </div>
+            <div className="quest-title-block">
+              <div className="quest-id sl-terminal-text">PROTOCOL_ID: #TQ-{quest.id.toString().padStart(3, '0')}</div>
+              <h2 className="quest-name-hud">{quest.name}</h2>
+            </div>
+          </div>
+
+          <div className="quest-log-box sl-terminal-text">
+            [ SYSTEM_LOG: Daily Quest "{quest.name}" has been initialized. Failure to comply will result in a penalty protocol. ]
+          </div>
+
+          <div className="quest-stats-hud-grid">
+            <div className="hud-stat-box">
+              <span className="stat-label-hud">GOAL_PROGRESS</span>
+              <span className="stat-value-hud">{completed ? '[100/100] CLEARED' : '[0/100] ACTIVE'}</span>
+            </div>
+            <div className="hud-stat-box">
+              <span className="stat-label-hud">XP_REWARD</span>
+              <span className="stat-value-hud">+{quest.xp} XP</span>
+            </div>
+          </div>
+
+          <div className="hud-warning-strip">
+            <AlertTriangle className="warning-hud-icon" />
+            <span className="sl-terminal-text">WARNING: DEBTORS WILL BE PUNISHED.</span>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="quest-divider" />
-
-        {/* Rewards Section */}
-        <div className="quest-section">
-          <div className="section-title">━━ REWARDS ━━</div>
-          <div className="rewards-container">
-            <div className="reward-box">
-              <span className="reward-label">+XP</span>
-              <span className="reward-amount">{quest.xp}</span>
-            </div>
-            <div className="reward-box">
-              <span className="reward-label">+Stat</span>
-              <span className="reward-amount">
-                {quest.stats
-                  ? Object.entries(quest.stats)
-                      .map(([s, p]) => `${p}`)
-                      .join(', ')
-                  : quest.increment}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Warning if applicable */}
-        <div className="quest-warning">
-          <span className="warning-icon">⚠️</span>
-          <span>Failure to complete the daily quest will result in an appropriate penalty.</span>
-        </div>
-
-        {/* Divider */}
-        <div className="quest-divider" />
-
-        {/* Action Buttons */}
-        <div className="quest-actions">
+        <div className="quest-modal-actions-hud">
           <motion.button
-            className="btn-quest-accept"
+            className={`hud-btn-primary ${completed ? 'btn-disabled' : ''}`}
             onClick={onComplete}
             disabled={completed}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={!completed ? { scale: 1.02, backgroundColor: 'var(--cyan)' } : {}}
+            whileTap={{ scale: 0.98 }}
           >
-            {completed ? '✓ COMPLETED' : 'ACCEPT QUEST'}
+            {completed ? '[ PROTOCOL_EXECUTED ]' : '[ EXECUTE_PROTOCOL ]'}
           </motion.button>
-          <motion.button
-            className="btn-quest-cancel"
-            onClick={onClose}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            DECLINE
-          </motion.button>
+          <button className="hud-btn-secondary" onClick={onClose}>
+            [ DISMISS ]
+          </button>
         </div>
       </motion.div>
     </motion.div>

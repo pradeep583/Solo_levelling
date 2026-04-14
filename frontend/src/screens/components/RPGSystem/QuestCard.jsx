@@ -1,60 +1,70 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { 
+  User, Eye, Video, BookOpen, Dumbbell, 
+  Code, Cpu, Grid, TrendingUp, Map, CheckCircle 
+} from 'lucide-react';
 import './QuestCard.css';
 
 const QuestCard = ({ quest, completed, onComplete }) => {
+  const IconMap = {
+    posture: User,
+    eye: Eye,
+    video: Video,
+    book: BookOpen,
+    workout: Dumbbell,
+    code: Code,
+    tech: Cpu,
+    strategy: Grid,
+    finance: TrendingUp,
+    travel: Map
+  };
+
+  const Icon = IconMap[quest.icon] || Grid;
+  const questRank = quest.rank || 'E';
+
   return (
     <motion.div
-      className={`quest-card-enhanced ${completed ? 'quest-completed' : ''}`}
-      whileHover={{ scale: 1.02 }}
+      className={`sl-card-angled quest-card-enhanced rank-${questRank.toLowerCase()} ${completed ? 'quest-completed' : ''}`}
+      whileHover={{ y: -2, borderColor: 'var(--cyan)' }}
       whileTap={{ scale: 0.98 }}
       onClick={onComplete}
     >
-      {/* Completion glow */}
-      {completed && <div className="quest-complete-glow" />}
+      <div className="sl-hud-corners" />
+      
+      {/* HUD Scanner Line */}
+      {!completed && <div className="quest-hud-scanner" />}
 
-      {/* Main content */}
       <div className="quest-card-main">
-        {/* Left - Icon & Name */}
         <div className="quest-card-left">
-          <div className="quest-card-icon">{quest.icon}</div>
+          <div className="quest-icon-wrapper">
+            <Icon className="quest-lucide-icon" />
+          </div>
           <div className="quest-card-info">
+            <div className="quest-id-label sl-terminal-text">#TQ-{quest.id.toString().padStart(3, '0')}</div>
             <div className="quest-card-name">{quest.name}</div>
-            <div className="quest-card-xp">+{quest.xp} XP</div>
+            <div className="quest-card-xp-badge">REWARD: +{quest.xp} XP</div>
           </div>
         </div>
 
-        {/* Right - Status */}
         <div className="quest-card-right">
+          <div className={`quest-rank-badge rank-${questRank.toLowerCase()}`}>{questRank}-RANK</div>
           <motion.div
-            className={`quest-status-badge ${completed ? 'status-done' : 'status-todo'}`}
+            className={`quest-status-indicator ${completed ? 'status-cleared' : 'status-active'}`}
             animate={completed ? { scale: [1, 1.1, 1] } : {}}
-            transition={{ duration: 0.4 }}
           >
-            {completed ? (
-              <>
-                <span className="status-icon">✓</span>
-                <span className="status-text">DONE</span>
-              </>
-            ) : (
-              <>
-                <span className="status-icon">→</span>
-                <span className="status-text">TODO</span>
-              </>
-            )}
+            {completed ? 'CLEARED' : 'ACTIVE'}
           </motion.div>
         </div>
       </div>
 
-      {/* Completion checkmark animation */}
       {completed && (
         <motion.div
-          className="quest-checkmark"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          className="quest-check-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          ✓
+          <CheckCircle className="check-icon" />
         </motion.div>
       )}
     </motion.div>

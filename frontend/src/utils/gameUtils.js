@@ -10,13 +10,24 @@ export const getRankFromPoints = (points) => {
 
 export const getRankColor = (rank) => {
   const colors = {
-    'D': '#ff9800',
-    'C': '#8bc34a',
-    'B': '#00d4ff',
-    'A': '#1e90ff',
-    'S': '#d4af37',
+    'D': 'var(--rank-d)',
+    'C': 'var(--rank-c)',
+    'B': 'var(--rank-b)',
+    'A': 'var(--rank-a)',
+    'S': 'var(--rank-s)',
   };
   return colors[rank] || '#666';
+};
+
+export const SECRET_QUEST_REQUIREMENTS = {
+  'iron_will': {
+    name: 'IRON WILL',
+    description: 'Complete all 10 daily quests in 1 day.',
+    check: (completedQuests) => {
+      const completedCount = Object.values(completedQuests).filter(Boolean).length;
+      return completedCount >= 10;
+    }
+  }
 };
 
 export const getTitleByLevel = (level) => {
